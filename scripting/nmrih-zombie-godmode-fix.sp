@@ -20,11 +20,8 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	lateloaded = late;
 }
 
-public void OnPluginStart()
+public void OnMapStart()
 {
-	if (GetFeatureStatus(FeatureType_Capability, "SDKHook_OnEntitySpawned") == FeatureStatus_Unavailable)
-		SetFailState("Only supports SM 1.11 or higher");
-
 	if (lateloaded)
 	{
 		int e = -1;
