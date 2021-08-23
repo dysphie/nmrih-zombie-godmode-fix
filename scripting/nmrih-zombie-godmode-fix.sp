@@ -9,7 +9,7 @@ public Plugin myinfo = {
 	name        = "[NMRiH] Speculative Zombie Godmode Fix",
 	author      = "Dysphie",
 	description = "Fixes invincible zombies and messed up pickups, maybe",
-	version     = "0.1.0",
+	version     = "0.2.0",
 	url         = ""
 };
 
@@ -29,11 +29,11 @@ public void OnPluginStart()
 	{
 		int e = -1;
 		while ((e = FindEntityByClassname(e, "nmrih_extract_preview")) != -1)
-			PatchExtractionPreview(e);
+			OnExtractionPreviewSpawned(e);
 	}
 }
 
-void PatchExtractionPreview(int camera)
+public void OnExtractionPreviewSpawned(int camera)
 {
 	int spawnflags = GetEntProp(camera, Prop_Data, "m_spawnflags");
 	SetEntProp(camera, Prop_Data, "m_spawnflags", spawnflags & ~SF_CAMERA_PLAYER_NOT_SOLID);
@@ -41,11 +41,6 @@ void PatchExtractionPreview(int camera)
 
 public void OnEntitySpawned(int entity, const char[] classname)
 {
-	if (IsValidEntity(entity) && IsEntityExtractionPreview(entity))
-		PatchExtractionPreview(entity);
-}
-
-bool IsEntityExtractionPreview(int entity)
-{
-	return HasEntProp(entity, Prop_Data, "m_nOldTakeDamageVec");
+	if (StrEqual(classname, "nmrih_extract_preview"))
+		SDKHook(entity, SDKHook_SpawnPost, OnExtractionPreviewSpawned);
 }
