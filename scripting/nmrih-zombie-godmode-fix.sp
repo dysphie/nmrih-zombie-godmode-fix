@@ -1,5 +1,7 @@
 
 #include <sdktools>
+#include <sdkhooks>
+
 #pragma newdecls required
 #pragma semicolon 1
 
